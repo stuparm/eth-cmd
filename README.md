@@ -8,7 +8,9 @@ To illustrate a simplified, hypothetical scenario, consider a block containing f
 - tx2: B sends ETH to A
 - tx3: A sends ETH to B
 - tx4: B sends ETH to A
+
 In this case, while the block contains four transactions, only two storage values are modified:
+
 - A.balance
 - B.balance
   
