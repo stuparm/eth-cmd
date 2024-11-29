@@ -1,0 +1,14 @@
+
+.git-branches.toml
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+go.sum
+
+.env
+.env.*
+
+
+.idea/
