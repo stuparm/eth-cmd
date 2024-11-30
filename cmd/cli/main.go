@@ -8,10 +8,11 @@ import (
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "evm-storage",
-	Short: "evm-storage is a cli tool to analyze storage of evm contracts",
-	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("Executing evm-storage cmd")
+	Use:               "evm-storage",
+	Short:             "evm-storage is a cli tool to analyze storage of evm contracts",
+	CompletionOptions: cobra.CompletionOptions{DisableDefaultCmd: true},
+	RunE: func(cmd *cobra.Command, args []string) error {
+		return cmd.Help()
 	},
 }
 
@@ -21,7 +22,7 @@ func init() {
 
 func main() {
 	if err := rootCmd.Execute(); err != nil {
-		fmt.Fprintln(os.Stderr, err)
+		fmt.Println(os.Stderr, err)
 		os.Exit(1)
 	}
 }
