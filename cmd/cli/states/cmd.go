@@ -5,8 +5,8 @@ import (
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
-	"github.com/stuparm/evm-storage/cmd/cli/flags"
-	"github.com/stuparm/evm-storage/cmd/cli/rpc"
+	"github.com/stuparm/eth-cmd/cmd/cli/flags"
+	"github.com/stuparm/eth-cmd/cmd/cli/rpc"
 	"time"
 )
 

@@ -2,13 +2,6 @@ package states
 
 import "github.com/ethereum/go-ethereum/common"
 
-const (
-	balanceKey = "address/%s/balance"
-	nonceKey   = "address/%s/nonce"
-	codeKey    = "address/%s/code"
-	storageKey = "address/%s/storage/%s"
-)
-
 type BlockStates struct {
 	balanceCounter map[common.Address]int
 	nonceCounter   map[common.Address]int
