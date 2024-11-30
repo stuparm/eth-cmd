@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/spf13/cobra"
-	"github.com/stuparm/evm-storage/cmd/cli/states"
+	"github.com/stuparm/eth-cmd/cmd/cli/states"
 	"os"
 )
 
