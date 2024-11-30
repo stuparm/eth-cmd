@@ -2,7 +2,8 @@ package states
 
 import (
 	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/core/types"
+	"github.com/ethereum/go-ethereum/common/hexutil"
+	"math/big"
 )
 
 type Block struct {
@@ -28,9 +29,14 @@ func NewStateTracerParams() *TracerParams {
 	}
 }
 
-type AddressAccount map[common.Address]*types.Account
+type Account struct {
+	Code    hexutil.Bytes               `json:"code,omitempty"`
+	Storage map[common.Hash]common.Hash `json:"storage,omitempty"`
+	Balance *hexutil.Big                `json:"balance,omitempty"`
+	Nonce   *big.Int                    `json:"nonce,omitempty"`
+}
 
 type States struct {
-	Pre  []*AddressAccount `json:"pre"`
-	Post []*AddressAccount `json:"post"`
+	Pre  map[common.Address]*Account `json:"pre"`
+	Post map[common.Address]*Account `json:"post"`
 }
