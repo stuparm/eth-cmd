@@ -36,6 +36,12 @@ var (
 		Usage:     "--throttle <throttle>",
 		Type:      DurationFlagType,
 	}
+	Limit = CmdFlag{
+		Name:      "limit",
+		Shorthand: "l",
+		Usage:     "--limit <limit>",
+		Type:      IntFlagType,
+	}
 	FromBlockNumber = CmdFlag{
 		Name:      "from-block-number",
 		Shorthand: "",
