@@ -26,6 +26,10 @@ func RegisterFlag(cmd *cobra.Command, flag CmdFlag) {
 		val := time.Duration(0)
 		cmd.Flags().DurationVarP(&val, flag.Name, flag.Shorthand, 0, flag.Usage)
 		return
+	case BoolFlagType:
+		val := false
+		cmd.Flags().BoolVarP(&val, flag.Name, flag.Shorthand, false, flag.Usage)
+		return
 	}
 
 	panic(fmt.Sprintf("Unsupported flag type: %s", flag.Type))
@@ -57,7 +61,9 @@ func ReadFlag[T any](cmd *cobra.Command, flag CmdFlag) T {
 			panic(err)
 		}
 		return any(value).(T)
-
+	case BoolFlagType:
+		value := cmd.Flag(flag.Name).Value.String()
+		return any(value == "true").(T)
 	}
 
 	panic(fmt.Sprintf("Unsupported flag type: %s", flag.Type))

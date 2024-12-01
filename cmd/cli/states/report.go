@@ -9,6 +9,7 @@ import (
 
 type Reporter interface {
 	WriteBlockStates(bs *BlockStates) error
+	WriteSummary(summary string) error
 }
 
 type consoleReporter struct{}
@@ -32,6 +33,12 @@ func (cr *consoleReporter) WriteBlockStates(bs *BlockStates) error {
 			fmt.Println("Address:", address.Hex(), "Storage:", key.Hex(), i)
 		}
 	}
+
+	return nil
+}
+
+func (cr *consoleReporter) WriteSummary(summary string) error {
+	fmt.Println(summary)
 
 	return nil
 }
@@ -78,7 +85,21 @@ func (fr *fileReporter) WriteBlockStates(bs *BlockStates) error {
 	}
 
 	return nil
+}
 
+func (fr *fileReporter) WriteSummary(summary string) error {
+	file, err := os.Create(fr.filePath)
+	if err != nil {
+		return errors.Wrap(err, "failed to create file")
+	}
+	defer file.Close()
+
+	_, err = file.WriteString(summary)
+	if err != nil {
+		return errors.Wrap(err, "failed to write to file")
+	}
+
+	return nil
 }
 
 func NewReporter(output string) Reporter {

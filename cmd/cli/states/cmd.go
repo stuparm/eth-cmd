@@ -22,6 +22,7 @@ func init() {
 	flags.RegisterFlag(CmdStates, flags.Throttle)
 	flags.RegisterFlag(CmdStates, flags.Limit)
 	flags.RegisterFlag(CmdStates, flags.Output)
+	flags.RegisterFlag(CmdStates, flags.Summary)
 }
 
 func execute(cmd *cobra.Command, args []string) error {
@@ -32,6 +33,7 @@ func execute(cmd *cobra.Command, args []string) error {
 	throttle := flags.ReadFlag[time.Duration](cmd, flags.Throttle)
 	limit := flags.ReadFlag[int](cmd, flags.Limit)
 	output := flags.ReadFlag[string](cmd, flags.Output)
+	withSummary := flags.ReadFlag[bool](cmd, flags.Summary)
 
 	client := rpc.NewClient(ctx, rpcURL)
 
@@ -59,19 +61,27 @@ func execute(cmd *cobra.Command, args []string) error {
 		}
 
 		fmt.Println(fmt.Sprintf("Executing tx %d of %d", i, len(txs)))
-		i++
+
 		if throttle > 0 {
 			time.Sleep(throttle)
 		}
-		if limit > 0 && i > limit {
+		if limit > 0 && i >= limit {
 			break
 		}
 
+		i++
 	}
 
 	reporter := NewReporter(output)
 	if err := reporter.WriteBlockStates(blockStates); err != nil {
 		return errors.Wrap(err, "failed to write block states")
+	}
+
+	if withSummary {
+		summary := NewSummarizer().Summarize(blockStates)
+		if err := reporter.WriteSummary(summary); err != nil {
+			return errors.Wrap(err, "failed to write summary")
+		}
 	}
 
 	return nil

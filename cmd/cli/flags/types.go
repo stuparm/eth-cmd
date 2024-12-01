@@ -7,6 +7,7 @@ const (
 	IntFlagType      FlagType = "int"
 	HexFlagType      FlagType = "hex"
 	DurationFlagType FlagType = "duration"
+	BoolFlagType     FlagType = "bool"
 )
 
 type CmdFlag struct {
@@ -47,6 +48,12 @@ var (
 		Shorthand: "o",
 		Usage:     "--output <output>",
 		Type:      StringFlagType,
+	}
+	Summary = CmdFlag{
+		Name:      "summary",
+		Shorthand: "",
+		Usage:     "--summary",
+		Type:      BoolFlagType,
 	}
 	FromBlockNumber = CmdFlag{
 		Name:      "from-block-number",
