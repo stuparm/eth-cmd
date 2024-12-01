@@ -45,8 +45,19 @@ func ReadFlag[T any](cmd *cobra.Command, flag CmdFlag) T {
 		return any(value).(T)
 	case HexFlagType:
 		valueStr := cmd.Flag(flag.Name).Value.String()
+		if valueStr == "" {
+			return any(hexutil.Big{}).(T)
+		}
 		value := hexutil.Big(*hexutil.MustDecodeBig(valueStr))
 		return any(value).(T)
+	case DurationFlagType:
+		valueStr := cmd.Flag(flag.Name).Value.String()
+		value, err := time.ParseDuration(valueStr)
+		if err != nil {
+			panic(err)
+		}
+		return any(value).(T)
+
 	}
 
 	panic(fmt.Sprintf("Unsupported flag type: %s", flag.Type))

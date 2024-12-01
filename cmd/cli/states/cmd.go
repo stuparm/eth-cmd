@@ -19,6 +19,7 @@ var CmdStates = &cobra.Command{
 		rpcURL := flags.ReadFlag[string](cmd, flags.RPCUrl)
 		blockNumber := flags.ReadFlag[hexutil.Big](cmd, flags.BlockNumber)
 		throttle := flags.ReadFlag[time.Duration](cmd, flags.Throttle)
+		limit := flags.ReadFlag[int](cmd, flags.Limit)
 
 		client := rpc.NewClient(ctx, rpcURL)
 
@@ -60,6 +61,9 @@ var CmdStates = &cobra.Command{
 			if throttle > 0 {
 				time.Sleep(throttle)
 			}
+			if limit > 0 && i > limit {
+				break
+			}
 
 		}
 
@@ -86,4 +90,5 @@ func init() {
 	flags.RegisterFlag(CmdStates, flags.RPCUrl)
 	flags.RegisterFlag(CmdStates, flags.BlockNumber)
 	flags.RegisterFlag(CmdStates, flags.Throttle)
+	flags.RegisterFlag(CmdStates, flags.Limit)
 }
