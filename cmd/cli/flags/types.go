@@ -42,6 +42,12 @@ var (
 		Usage:     "--limit <limit>",
 		Type:      IntFlagType,
 	}
+	Output = CmdFlag{
+		Name:      "output",
+		Shorthand: "o",
+		Usage:     "--output <output>",
+		Type:      StringFlagType,
+	}
 	FromBlockNumber = CmdFlag{
 		Name:      "from-block-number",
 		Shorthand: "",

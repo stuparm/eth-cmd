@@ -48,3 +48,18 @@ func (bs *BlockStates) AddStorage(address common.Address, key common.Hash) {
 	}
 	bs.storageCounter[address][key]++
 }
+
+func (bs *BlockStates) AddAccountState(addr common.Address, acc *Account) {
+	if len(acc.Code) != 0 {
+		bs.AddCode(addr)
+	}
+	if acc.Balance != nil {
+		bs.AddBalance(addr)
+	}
+	if acc.Nonce != nil {
+		bs.AddNonce(addr)
+	}
+	for key, _ := range acc.Storage {
+		bs.AddStorage(addr, key)
+	}
+}
