@@ -18,6 +18,7 @@ var CmdStates = &cobra.Command{
 
 		rpcURL := flags.ReadFlag[string](cmd, flags.RPCUrl)
 		blockNumber := flags.ReadFlag[hexutil.Big](cmd, flags.BlockNumber)
+		throttle := flags.ReadFlag[time.Duration](cmd, flags.Throttle)
 
 		client := rpc.NewClient(ctx, rpcURL)
 
@@ -56,7 +57,9 @@ var CmdStates = &cobra.Command{
 
 			fmt.Println(fmt.Sprintf("Executing tx %d of %d", i, len(txs)))
 			i++
-			time.Sleep(1 * time.Second) // to avoid rate limiting, TODO: remove this
+			if throttle > 0 {
+				time.Sleep(throttle)
+			}
 
 		}
 
@@ -82,5 +85,5 @@ var CmdStates = &cobra.Command{
 func init() {
 	flags.RegisterFlag(CmdStates, flags.RPCUrl)
 	flags.RegisterFlag(CmdStates, flags.BlockNumber)
-
+	flags.RegisterFlag(CmdStates, flags.Throttle)
 }

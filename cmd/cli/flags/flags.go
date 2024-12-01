@@ -5,6 +5,7 @@ import (
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/spf13/cobra"
 	"strconv"
+	"time"
 )
 
 func RegisterFlag(cmd *cobra.Command, flag CmdFlag) {
@@ -20,6 +21,10 @@ func RegisterFlag(cmd *cobra.Command, flag CmdFlag) {
 	case HexFlagType:
 		val := ""
 		cmd.Flags().StringVarP(&val, flag.Name, flag.Shorthand, "", flag.Usage)
+		return
+	case DurationFlagType:
+		val := time.Duration(0)
+		cmd.Flags().DurationVarP(&val, flag.Name, flag.Shorthand, 0, flag.Usage)
 		return
 	}
 
