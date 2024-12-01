@@ -8,8 +8,8 @@ import (
 )
 
 var rootCmd = &cobra.Command{
-	Use:               "evm-storage",
-	Short:             "evm-storage is a cli tool to analyze storage of evm contracts",
+	Use:               "eth-cmd",
+	Short:             "eth-cmd is a cli tool",
 	CompletionOptions: cobra.CompletionOptions{DisableDefaultCmd: true},
 	RunE: func(cmd *cobra.Command, args []string) error {
 		return cmd.Help()

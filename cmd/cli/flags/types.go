@@ -3,9 +3,10 @@ package flags
 type FlagType string
 
 const (
-	StringFlagType FlagType = "string"
-	IntFlagType    FlagType = "int"
-	HexFlagType    FlagType = "hex"
+	StringFlagType   FlagType = "string"
+	IntFlagType      FlagType = "int"
+	HexFlagType      FlagType = "hex"
+	DurationFlagType FlagType = "duration"
 )
 
 type CmdFlag struct {
@@ -28,6 +29,12 @@ var (
 		Shorthand: "b",
 		Usage:     "--block-number <block-number>",
 		Type:      HexFlagType,
+	}
+	Throttle = CmdFlag{
+		Name:      "throttle",
+		Shorthand: "t",
+		Usage:     "--throttle <throttle>",
+		Type:      DurationFlagType,
 	}
 	FromBlockNumber = CmdFlag{
 		Name:      "from-block-number",
