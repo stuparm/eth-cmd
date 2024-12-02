@@ -59,12 +59,12 @@ var (
 		Name:      "from-block-number",
 		Shorthand: "",
 		Usage:     "--from-block-number <from-block>",
-		Type:      IntFlagType,
+		Type:      HexFlagType,
 	}
 	ToBlockNumber = CmdFlag{
 		Name:      "to-block-number",
 		Shorthand: "",
 		Usage:     "--to-block-number <to-block>",
-		Type:      IntFlagType,
+		Type:      HexFlagType,
 	}
 )
