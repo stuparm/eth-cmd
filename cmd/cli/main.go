@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/spf13/cobra"
+	"github.com/stuparm/eth-cmd/cmd/cli/gen"
 	"github.com/stuparm/eth-cmd/cmd/cli/states"
 	"os"
 )
@@ -18,6 +19,7 @@ var rootCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(states.CmdStates)
+	rootCmd.AddCommand(gen.CmdGen)
 }
 
 func main() {
