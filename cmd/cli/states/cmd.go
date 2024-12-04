@@ -77,7 +77,8 @@ func execute(cmd *cobra.Command, args []string) error {
 		txs = append(txs, b.Transactions...)
 	}
 
-	blockStates := NewBlockStates()
+	postStates := NewBlockStates()
+	preStates := NewBlockStates()
 	i := 1
 	for _, tx := range txs {
 		txState, err := rpc.NewCaller[States](client).
@@ -87,7 +88,11 @@ func execute(cmd *cobra.Command, args []string) error {
 		}
 
 		for addr, acc := range txState.Post {
-			blockStates.AddAccountState(addr, acc)
+			postStates.AddAccountState(addr, acc)
+		}
+
+		for addr, acc := range txState.Pre {
+			preStates.AddAccountState(addr, acc)
 		}
 
 		fmt.Println(fmt.Sprintf("Executing tx %d of %d", i, len(txs)))
@@ -103,12 +108,12 @@ func execute(cmd *cobra.Command, args []string) error {
 	}
 
 	reporter := NewReporter(output)
-	if err := reporter.WriteBlockStates(blockStates); err != nil {
+	if err := reporter.WriteBlockStates(postStates); err != nil {
 		return errors.Wrap(err, "failed to write block states")
 	}
 
 	if withSummary {
-		summary := NewSummarizer().Summarize(blockStates)
+		summary := NewSummarizer().Summarize(postStates)
 		if err := reporter.WriteSummary(summary); err != nil {
 			return errors.Wrap(err, "failed to write summary")
 		}

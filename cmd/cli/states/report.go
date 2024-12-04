@@ -8,7 +8,7 @@ import (
 )
 
 type Reporter interface {
-	WriteBlockStates(bs *BlockStates) error
+	WriteBlockStates(pre, post *BlockStates) error
 	WriteSummary(summary string) error
 }
 
@@ -18,20 +18,25 @@ func NewConsoleReporter() Reporter {
 	return &consoleReporter{}
 }
 
-func (cr *consoleReporter) WriteBlockStates(bs *BlockStates) error {
-	for address, i := range bs.balanceCounter {
+func (cr *consoleReporter) WriteBlockStates(pre, post *BlockStates) error {
+	for address, i := range post.balanceCounter {
 		fmt.Println("Address:", address.Hex(), "Balance:", i)
 	}
-	for address, i := range bs.nonceCounter {
+	for address, i := range post.nonceCounter {
 		fmt.Println("Address:", address.Hex(), "Nonce:", i)
 	}
-	for address, i := range bs.codesCounter {
+	for address, i := range post.codesCounter {
 		fmt.Println("Address:", address.Hex(), "Code:", i)
 	}
-	for address, storage := range bs.storageCounter {
+	for address, storage := range post.storageCounter {
 		for key, i := range storage {
 			fmt.Println("Address:", address.Hex(), "Storage:", key.Hex(), i)
 		}
+	}
+
+	fmt.Println("Touched contracts")
+	for address, _ := range pre.codesCounter {
+		fmt.Println("Address:", address.Hex())
 	}
 
 	return nil
@@ -51,22 +56,22 @@ func NewFileReporter(filePath string) Reporter {
 	return &fileReporter{filePath: filePath}
 }
 
-func (fr *fileReporter) WriteBlockStates(bs *BlockStates) error {
+func (fr *fileReporter) WriteBlockStates(pre, post *BlockStates) error {
 	var sb strings.Builder
 
-	for address, i := range bs.balanceCounter {
+	for address, i := range post.balanceCounter {
 		sb.WriteString(fmt.Sprintf("Address: %s Balance: %d\n", address.Hex(), i))
 	}
 
-	for address, i := range bs.nonceCounter {
+	for address, i := range post.nonceCounter {
 		sb.WriteString(fmt.Sprintf("Address: %s Nonce: %d\n", address.Hex(), i))
 	}
 
-	for address, i := range bs.codesCounter {
+	for address, i := range post.codesCounter {
 		sb.WriteString(fmt.Sprintf("Address: %s Code: %d\n", address.Hex(), i))
 	}
 
-	for address, storage := range bs.storageCounter {
+	for address, storage := range post.storageCounter {
 		for key, i := range storage {
 			sb.WriteString(fmt.Sprintf("Address: %s Storage: %s %d\n", address.Hex(), key.Hex(), i))
 		}
