@@ -7,7 +7,5 @@ go.sum
 .env
 
 .idea/
-
-*.log
-
 input/
+*.log
